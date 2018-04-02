@@ -1,0 +1,228 @@
+swagger: '2.0'
+info:
+  description: >-
+    This component provides the API for the Pizzeria Domain, like:
+    - Get the Partner Pizzeria information
+  version: 1.0.0
+  title: 'Pizzeria - Functional Domain API'
+host: 'localhost:4000'
+basePath: /pizzeria/v1
+tags:
+  - name: pizzeria
+    description: Pizzeria resource
+schemes:
+  - http
+  - https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /pizzeria:
+    get:
+      tags:
+        - pizzeria
+      summary: >-
+        Pizzeria resource. Get all teh information about one pizzeria.
+      description: Return a client pizzeria by proximity
+      operationId: getPizzeria
+      parameters:
+        - $ref: '#/parameters/Accept'
+        - name: name
+          in: query
+          type: string
+          required: true
+          description: The pizzeria identifier.
+      responses:
+        '200':
+          description: Successful operation. Pizzeria Returned!
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Pizzeria'
+        '204':
+          $ref: '#/responses/NoContent'
+        '400':
+          $ref: '#/responses/Unauthorized'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '422':
+          $ref: '#/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/responses/InternalServerError'
+        '503':
+          $ref: '#/responses/ServiceUnavailable'
+responses:
+  NoContent:
+    description: No Content.
+  BadRequest:
+    description: Bad Request.
+    schema:
+      $ref: '#/definitions/DefaultException'
+  Unauthorized:
+    description: Unauthorized Access.
+    schema:
+      $ref: '#/definitions/DefaultException'
+  Forbidden:
+    description: Forbidden Access.
+    schema:
+      $ref: '#/definitions/DefaultException'
+  NotFound:
+    description: Not found.
+    schema:
+      $ref: '#/definitions/DefaultException'
+  UnprocessableEntity:
+    description: Semantic Error.
+    schema:
+      $ref: '#/definitions/DefaultException'
+  InternalServerError:
+    description: Internal Server Error.
+    schema:
+      $ref: '#/definitions/DefaultException'
+  ServiceUnavailable:
+    description: Service Indisponible. Try again later!
+    schema:
+      $ref: '#/definitions/DefaultException'
+
+parameters:
+   Accept:
+     name: Accept
+     in: header
+     description: The Accept that indicates the accepted content type for this operation
+     required: true
+     type: string
+     enum: ["application/json"]
+
+definitions:
+  DefaultException:
+    type: object
+    description: >-
+        Default Exception Type. This structure is used for most of HTTP Returned Status Codes:
+          - 4xx
+          - 5xx
+        The following classification of error types is:
+          - CRITICAL: Indicates an error that prevents the application from working.
+          - FATAL: Indicates a complete feature blocking error.
+          - ERROR: Indicates an error that does not affect more functionality.
+          - WARNING: Indicates that the application works, but a warning has been generated.
+    properties:
+      code:
+        type: string
+        description: The error returned code
+        example: "001"
+      message:
+        type: string
+        description: The error message
+        example: Resource not found
+      fields:
+        type: array
+        description: Structure used to reference fields that belongs to the current error
+        items:
+          properties:
+            field:
+              type: string
+              description: The name of the field
+              example: client_id
+            message:
+              type: string
+              description: The field error message
+              example: Invalid client_id
+            value:
+              type: string
+              description: The field value
+              example:
+      type:
+        type: string
+        enum: [CRITICAL, FATAL, ERROR, WARNING]
+        description: >-
+          Indicates the error classification
+            - CRITICAL: Indicates an error that prevents the application from working.
+            - FATAL: Indicates a complete feature blocking error.
+            - ERROR: Indicates an error that does not affect more functionality.
+            - WARNING: Indicates that the application works, but a warning has been generated.
+        example: ERROR
+    example:
+      code: "001"
+      message: "Validation error!"
+      fields:
+        - field: "client_id"
+          message: "Invalid client id!"
+          value: "1231231"
+      type: "ERROR"
+
+  Address:
+    type: object
+    description: A list of Address of an pizzeria.
+    properties:
+      country:
+        type: string
+        description: The contry of a pizzeria.
+        example: "USA"
+      state:
+        type: string
+        description: The state of a pizzeria.
+        example: "Washington"
+      street:
+        type: string
+        description: The Street address.
+        example: "Toronto Avenue"
+      number:
+        type: string
+        description: The number address.
+        example: "2018"
+      geolocalization:
+        type: object
+        description: The geolocalization of a pizzeria.
+        properties:
+          latitude:
+            type: number
+            description: The latitude of a geolocalization.
+            example: -23.605473
+          longitude:
+            type: number
+            description: The longitude of a geolocalization.
+            example: -46.696249
+
+  Pizzeria:
+    type: object
+    description: A list of pizzerias by proximity.
+    properties:
+      pizzeria_id:
+        type: string
+        description: The pizzaria identifier
+        example: "pizzaries123"
+      name:
+        type: string
+        description: The pizzaria identifier
+        example: "PozziBono"
+      address:
+        $ref: '#/definitions/Address'
+      phone_number:
+        type: string
+        description: The pizzaria phone number
+        example: "55 11 29852433"
+      site:
+        type: string
+        description: The site of a pizzeria
+        example: "http://www.pizeria.com/pizzeria"
+    required:
+      - pizzeria_id
+    example:
+      pizzeria:
+        pizzeria_id: "R12"
+        name: "1015699"
+        address:
+          country: "A"
+          state: "G"
+          street: "1"
+          number: 1234.99
+          geolocalization:
+            latitude: -23.605473
+            logitude: -46.696249
+        phone_number: "55 11 29852433"
+        site: "http://www.pizeria.com/pizzeria"
