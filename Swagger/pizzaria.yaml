@@ -23,7 +23,7 @@ paths:
       tags:
         - pizzeria
       summary: >-
-        Pizzeria resource. Get all teh information about one pizzeria.
+        Pizzeria resource. Get all the information about pizzeria by proximity.
       description: Return a client pizzeria by proximity
       operationId: getPizzeria
       parameters:
@@ -33,6 +33,11 @@ paths:
           type: string
           required: true
           description: The pizzeria identifier.
+        - name: geolocalization
+          in: query
+          type: string
+          required: true
+          description: The localisation of a pizzeria, latitude and longitude separate by comma.
       responses:
         '200':
           description: Successful operation. Pizzeria Returned!
@@ -214,13 +219,13 @@ definitions:
       - pizzeria_id
     example:
       pizzeria:
-        pizzeria_id: "R12"
-        name: "1015699"
+        pizzeria_id: "pizzaries123"
+        name: "PozziBono"
         address:
-          country: "A"
-          state: "G"
-          street: "1"
-          number: 1234.99
+          country: "USA"
+          state: "Washington"
+          street: "Toronto Avenue"
+          number: "2018"
           geolocalization:
             latitude: -23.605473
             logitude: -46.696249
