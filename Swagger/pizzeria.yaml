@@ -33,11 +33,128 @@ paths:
           type: string
           required: true
           description: The pizzeria identifier.
-        - name: geolocalization
+        - name: location
           in: query
           type: string
           required: true
           description: The localisation of a pizzeria, latitude and longitude separate by comma.
+      responses:
+        '200':
+          description: Successful operation. Pizzeria Returned!
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Pizzeria'
+        '204':
+          $ref: '#/responses/NoContent'
+        '400':
+          $ref: '#/responses/Unauthorized'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '422':
+          $ref: '#/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/responses/InternalServerError'
+        '503':
+          $ref: '#/responses/ServiceUnavailable'
+    post:
+      tags:
+        - pizzeria
+      summary: >-
+        Pizzeria resource. Create a pizzeria.
+      description: Create a new Pizzeria
+      operationId: postPizzeria
+      parameters:
+        - $ref: '#/parameters/Accept'
+        - in : body
+          name: body
+          description: ''
+          required: true
+          schema:
+            $ref: '#/definitions/Pizzeria'
+      responses:
+        '200':
+          description: Successful operation. Pizzeria Posted!
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Pizzeria'
+        '204':
+          $ref: '#/responses/NoContent'
+        '400':
+          $ref: '#/responses/Unauthorized'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '422':
+          $ref: '#/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/responses/InternalServerError'
+        '503':
+          $ref: '#/responses/ServiceUnavailable'
+    put:
+      tags:
+        - pizzeria
+      summary: >-
+        Pizzeria resource. Update a pizzeria.
+      description: Update a new Pizzeria
+      operationId: putPizzeria
+      parameters:
+        - $ref: '#/parameters/Accept'
+        - in : body
+          name: body
+          description: ''
+          required: true
+          schema:
+            $ref: '#/definitions/Pizzeria'
+      responses:
+        '200':
+          description: Successful operation. Pizzeria Posted!
+          schema:
+            type: object
+            properties:
+              data:
+                $ref: '#/definitions/Pizzeria'
+        '204':
+          $ref: '#/responses/NoContent'
+        '400':
+          $ref: '#/responses/Unauthorized'
+        '401':
+          $ref: '#/responses/Unauthorized'
+        '403':
+          $ref: '#/responses/Forbidden'
+        '404':
+          $ref: '#/responses/NotFound'
+        '422':
+          $ref: '#/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/responses/InternalServerError'
+        '503':
+          $ref: '#/responses/ServiceUnavailable'
+
+    delete:
+      tags:
+        - pizzeria
+      summary: >-
+        Pizzeria resource. Delete a pizzeria.
+      description: Delete a pizzeria
+      operationId: deletePizzeria
+      parameters:
+        - $ref: '#/parameters/Accept'
+        - name: pizzeria_id
+          in: query
+          type: string
+          required: true
+          description: The pizzeria identifier.
       responses:
         '200':
           description: Successful operation. Pizzeria Returned!
@@ -180,15 +297,15 @@ definitions:
         type: string
         description: The number address.
         example: "2018"
-      geolocalization:
+      location:
         type: object
         description: The geolocalization of a pizzeria.
         properties:
-          latitude:
+          lat:
             type: number
             description: The latitude of a geolocalization.
             example: -23.605473
-          longitude:
+          lng:
             type: number
             description: The longitude of a geolocalization.
             example: -46.696249
